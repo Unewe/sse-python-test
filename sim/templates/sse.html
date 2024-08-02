@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE</title>
+</head>
+<body>
+<h1>Server Sent Events</h1>
+<div id="sse-data"></div>
+<div>
+    <button onclick="startSSE()">Start</button>
+    <button onclick="stopSSE()" disabled>Stop</button>
+</div>
+<div>
+    <input id="input" />
+    <button onclick="sendMessage()">SendMessage</button>
+</div>
+
+
+<script>
+    let eventSource;
+    const sseData = document.getElementById('sse-data');
+
+    function startSSE() {
+        eventSource = new EventSource('/stream/');
+        eventSource.onmessage = event => {
+            console.log(event)
+            sseData.innerHTML += event.data + '<br>'
+        };
+        document.querySelector('button[onclick="startSSE()"]').disabled = true;
+        document.querySelector('button[onclick="stopSSE()"]').disabled = false;
+    }
+
+    function stopSSE() {
+        if (eventSource) {
+            eventSource.close();
+        }
+        document.querySelector('button[onclick="startSSE()"]').disabled = false;
+        document.querySelector('button[onclick="stopSSE()"]').disabled = true;
+    }
+
+    function sendMessage() {
+        fetch("/message/", {method: "POST", body: JSON.stringify(document.getElementById("input").value)}).then()
+    }
+</script>
+</body>
+</html>
