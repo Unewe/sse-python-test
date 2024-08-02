@@ -1,12 +1,10 @@
 import asyncio
-import random
-
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-messages = ["asdfasdf"]
+messages = []
 
 async def sse_stream(request):
     """
